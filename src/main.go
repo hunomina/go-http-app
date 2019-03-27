@@ -1,7 +1,7 @@
 package main
 
 import (
-	"app/controller"
+	"controller"
 	"log"
 	"net/http"
 )
@@ -15,6 +15,7 @@ func main() {
 
 	http.HandleFunc("/hello", controller.HomeController{}.Hello)
 	http.HandleFunc("/css/", controller.ResourcesController{}.GetCssFile)
+	http.HandleFunc("/users", controller.UserController{}.GetAllUsers)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
