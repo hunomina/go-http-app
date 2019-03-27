@@ -1,0 +1,32 @@
+version: "3"
+
+networks:
+  app:
+
+services:
+  app:
+    image: golang:1.12
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 8080:8080
+    working_dir: /app/src
+    environment:
+      - GOPATH=/app
+    command: go run main.go
+    networks:
+      - app
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.4
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    environment:
+      - MYSQL_ROOT_PASSWORD=chemene123
+    ports:
+      - 8081:3306
+    networks:
+      - app

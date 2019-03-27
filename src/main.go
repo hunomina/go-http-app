@@ -1,7 +1,7 @@
 package main
 
 import (
-	"httpApplication/app/controller"
+	"app/controller"
 	"log"
 	"net/http"
 )
@@ -17,5 +17,4 @@ func main() {
 	http.HandleFunc("/css/", controller.ResourcesController{}.GetCssFile)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
-
 }
