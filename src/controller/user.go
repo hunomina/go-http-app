@@ -7,10 +7,14 @@ import (
 	"log"
 	. "model"
 	"net/http"
+	"text/template"
 )
 
 type UserController struct {
+
 }
+
+const usersTemplate = "view/home.html"
 
 func (c UserController) GetAllUsers(w http.ResponseWriter, req *http.Request) {
 
@@ -41,8 +45,26 @@ func (c UserController) GetAllUsers(w http.ResponseWriter, req *http.Request) {
 		err = rows.Scan(&u.Id, &u.Name, &u.Email, &u.Password, &u.Age)
 		if err != nil {
 			fmt.Println("Fetch user : " + err.Error())
+			return
 		}
-		println(u.Id, u.Name, u.Email, u.Password, u.Age)
 		result = append(result, u)
+	}
+
+	data := struct {
+		Users []User
+	}{result}
+
+	t, err := template.ParseFiles(usersTemplate) // path from $GOPATH/src
+
+	if err != nil {
+		fmt.Println("Template Loading : "+ err.Error())
+		return
+	}
+
+	err = t.Execute(w, data)
+
+	if err != nil {
+		fmt.Println("Template Rendering : "+ err.Error())
+		return
 	}
 }

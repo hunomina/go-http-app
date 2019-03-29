@@ -5,6 +5,29 @@
     <title>Users</title>
 </head>
 <body>
-
+{{ if not .Users }}
+    <p>No users</p>
+{{ else }}
+    <table>
+        <thead>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Age</th>
+        </thead>
+        <tbody>
+        {{ range .Users }}
+            <tr>
+                <td>{{ .Id }}</td>
+                <td>{{ .Name }}</td>
+                <td>{{ .Email }}</td>
+                <td>{{ .Password }}</td>
+                <td>{{ if gt .Age 0 }}{{ .Age }}{{ else }}Unborn{{ end }}</td>
+            </tr>
+        {{ end }}
+        </tbody>
+    </table>
+{{ end }}
 </body>
 </html>
